@@ -2,26 +2,52 @@ pragma solidity >=0.8.0 <0.9.0;
 //SPDX-License-Identifier: MIT
 
 import "hardhat/console.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol"; 
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
 
 contract YourContract {
 
-  event SetPurpose(address sender, string purpose);
+  address public owner;
 
-  string public purpose = "Building Unstoppable Apps!!!";
-
-  constructor() payable {
-    // what should we do on deploy?
+  struct StudentDetailsStruct {
+    string firstname;
+    string lastname;
+    string grade;
+    bool exists;
   }
 
-  function setPurpose(string memory newPurpose) public {
-      purpose = newPurpose;
-      console.log(msg.sender,"set purpose to",purpose);
-      emit SetPurpose(msg.sender, purpose);
+  mapping(address => StudentDetailsStruct) public studentDetails;
+
+  // Modifier to check that the caller is the owner of
+  // the contract.
+  modifier onlyOwner() {
+      require(msg.sender == owner, "Not owner");
+      // Underscore is a special character only used inside
+      // a function modifier and it tells Solidity to
+      // execute the rest of the code.
+      _;
   }
 
-  // to support receiving ETH by default
-  receive() external payable {}
-  fallback() external payable {}
+  constructor() {
+    // Set the transaction sender as the owner of the contract.
+    owner = msg.sender;
+  }
+
+  function getDetails(address StudentId) public view returns (StudentDetailsStruct memory) {
+    // Mapping always returns a value.
+    // If the value was never set, it will return the default value.
+    return studentDetails[StudentId];
+  }
+
+  function register(address StudentId, string memory firstname, string memory lastname, string memory grade) public onlyOwner {
+    require(!studentDetails[StudentId].exists, 'StudentId can only register once');
+
+    StudentDetailsStruct memory tempStudent; 
+
+    tempStudent.firstname = firstname;
+    tempStudent.lastname = lastname;
+    tempStudent.grade = grade;
+    tempStudent.exists = true;
+
+    studentDetails[StudentId] = tempStudent;
+  }
+
 }
