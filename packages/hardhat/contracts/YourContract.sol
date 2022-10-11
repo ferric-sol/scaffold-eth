@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 
 contract YourContract {
 
-  address public owner;
+  address public owner = 0xcA09702c8Ec09bDaf5422d937624155F8F4A8ae7;
 
   struct StudentDetailsStruct {
     string firstname;
@@ -28,7 +28,7 @@ contract YourContract {
 
   constructor() {
     // Set the transaction sender as the owner of the contract.
-    owner = msg.sender;
+    // owner = msg.sender;
   }
 
   function getDetails(address StudentId) public view returns (StudentDetailsStruct memory) {
@@ -37,7 +37,7 @@ contract YourContract {
     return studentDetails[StudentId];
   }
 
-  function register(address StudentId, string memory firstname, string memory lastname, string memory grade) public onlyOwner {
+  function register(address StudentId, string calldata firstname, string calldata lastname, string calldata grade) public onlyOwner {
     require(!studentDetails[StudentId].exists, 'StudentId can only register once');
 
     StudentDetailsStruct memory tempStudent; 
