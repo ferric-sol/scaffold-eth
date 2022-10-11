@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 
 contract YourContract {
 
-  address public owner = 0xcA09702c8Ec09bDaf5422d937624155F8F4A8ae7;
+  address public owner;
 
   struct StudentDetailsStruct {
     string firstname;
@@ -28,7 +28,7 @@ contract YourContract {
 
   constructor() {
     // Set the transaction sender as the owner of the contract.
-    // owner = msg.sender;
+    owner = msg.sender;
   }
 
   function getDetails(address StudentId) public view returns (StudentDetailsStruct memory) {
