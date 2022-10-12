@@ -45,9 +45,12 @@ contract YourContract {
     _;
   }
 
+  event FundsDeposited(address user, uint256 amount);
+  event ProfileUpdated(address user);
 
   function deposit(uint256 _amount) public {
       balances[msg.sender] = _amount;
+      emit FundsDeposited(msg.sender, _amount);
   }
 
   function checkBalance() public view returns (uint256) {
@@ -57,6 +60,7 @@ contract YourContract {
   function setUserDetails(string calldata name, uint256 age) public {
     userDetails[msg.sender].name = name;
     userDetails[msg.sender].age = age;
+    emit ProfileUpdated(msg.sender);
   }
 
   function getUserDetail() public view returns (userDetailsStruct memory) {
