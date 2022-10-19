@@ -12,15 +12,15 @@ contract YourContract {
     owner = payable(msg.sender);
   }
 
+  mapping(address => uint256) public balances;
+
   // Function to deposit Ether into this contract.
   // Call this function along with some Ether.
   // The balance of this contract will be automatically updated.
   function deposit() public payable {
     balances[msg.sender] += msg.value;
   }
-
-  mapping(address => uint256) public balances;
-
+  
   function checkBalance() public view returns (uint256) {
     return balances[msg.sender];
   }
