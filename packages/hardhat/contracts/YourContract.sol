@@ -20,9 +20,19 @@ contract YourContract {
   function deposit() public payable {
     balances[msg.sender] += msg.value;
   }
-  
+
   function checkBalance() public view returns (uint256) {
     return balances[msg.sender];
   }
+
+  // Fallback function must be declared as external.
+  fallback() external payable {
+    deposit();
+  }
+
+  // Receive is a variant of fallback that is triggered when msg.data is empty
+  receive() external payable {
+    deposit();
+  } 
 
 }
