@@ -338,7 +338,16 @@ function App(props) {
             */}
 
           <Contract
-            name="YourContract"
+            name="StakingPool"
+            price={price}
+            signer={userSigner}
+            provider={localProvider}
+            address={address}
+            blockExplorer={blockExplorer}
+            contractConfig={contractConfig}
+          />
+          <Contract
+            name="SSVETH"
             price={price}
             signer={userSigner}
             provider={localProvider}

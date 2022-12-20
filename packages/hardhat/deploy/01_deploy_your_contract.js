@@ -9,11 +9,21 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
-  await deploy("SSVETH", {
+  const SSVETH = await ethers.getContract("SSVETH", deployer);
+
+  await deploy("StakingPool", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
+    args: [SSVETH.address],
     log: true,
   });
 
+  // Getting a previously deployed contract
+  const StakingPool = await ethers.getContract("StakingPool", deployer);
+  console.log('StakingPool: ', StakingPool.address)
+  await SSVETH.transferOwnership(
+    StakingPool.address
+  );
+
 };
-module.exports.tags = ["SSVETH"];
+module.exports.tags = ["StakingPool"];

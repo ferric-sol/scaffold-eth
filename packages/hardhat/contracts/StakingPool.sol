@@ -1,4 +1,5 @@
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0 <0.9.0;  //Do not change the solidity version as it negativly impacts submission grading
+//SPDX-License-Identifier: MIT
 
 import "./interfaces/IDepositContract.sol";
 // import "./interfaces/ICommon.sol";
@@ -14,7 +15,7 @@ contract StakingPool is ReentrancyGuard {
     address public WhitelistKeyGenerator;
 
     address public WITHDRAWAL_ADDRESS;
-    IDepositContract immutable DepositContract;
+    // IDepositContract immutable DepositContract;
     SSVETH ssvETH; 
     // ICommon immutable CommonContract;
     uint256 public immutable VALIDATOR_AMOUNT = 32 * 1e18;
@@ -29,27 +30,28 @@ contract StakingPool is ReentrancyGuard {
     event UserStaked(address user_address, uint256 amount);
     event PubKeyDeposited(bytes pubkey);
 
-    constructor(address keyGenerator,
-        address depositAddress,
-        // address common,
-        address withdrawal,
-        address ssv_contract,
-        address ssv_token,
-        address ssvETH_address, 
-        uint32[4] memory ids){
-        WITHDRAWAL_ADDRESS = withdrawal;
-        WhitelistKeyGenerator = keyGenerator;
-        DepositContract = IDepositContract(depositAddress);
+    constructor(address ssvETH_address) {
+        // address keyGenerator,
+        // address depositAddress,
+        // // address common,
+        // address withdrawal,
+        // address ssv_contract,
+        // address ssv_token,
+        // uint32[4] memory ids){
+        // WITHDRAWAL_ADDRESS = withdrawal;
+        // WhitelistKeyGenerator = keyGenerator;
+        // DepositContract = IDepositContract(depositAddress);
+        // ssvETH = SSVETH(ssvETH_address);
         ssvETH = SSVETH(ssvETH_address);
-        // CommonContract = ICommon(common);
-        SSV_CONTRACT_ADDR = ssv_contract;
-        SSV_TOKEN_ADDR = ssv_token;
-        OperatorIDs = ids;
+        // // CommonContract = ICommon(common);
+        // SSV_CONTRACT_ADDR = ssv_contract;
+        // SSV_TOKEN_ADDR = ssv_token;
+        // OperatorIDs = ids;
     }
 
-    function getOperators() public view returns( uint32[4] memory){
-        return OperatorIDs;
-    }
+    // function getOperators() public view returns( uint32[4] memory){
+    //     return OperatorIDs;
+    // }
 
     function stake() public payable {
         require(msg.value > 0, "Can't stake zero amount");
@@ -68,7 +70,7 @@ contract StakingPool is ReentrancyGuard {
         bytes calldata withdrawal_credentials,
         bytes calldata signature,
         bytes32 deposit_data_root) external {
-        DepositContract.deposit{value : VALIDATOR_AMOUNT}(pubkey, withdrawal_credentials, signature, deposit_data_root);
+        // DepositContract.deposit{value : VALIDATOR_AMOUNT}(pubkey, withdrawal_credentials, signature, deposit_data_root);
         emit PubKeyDeposited(pubkey);
     }
 
